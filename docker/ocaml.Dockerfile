@@ -11,6 +11,10 @@ RUN sudo pacman -S --noprogressbar --noconfirm \
     && \
     opam init --disable-sandboxing -a -y \
     && \
-    opam install -y merlin utop ocp-indent ocp-index
+    opam install -y merlin utop ocp-indent ocp-index \
+    && \
+    bash -c 'echo "eval $(opam env)" >> ~/.bashrc'
 
-ENTRYPOINT /bin/bash -l
+ENTRYPOINT [ "opam", "config", "exec", "--" ]
+
+CMD [ "/bin/bash", "-l" ]
