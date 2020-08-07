@@ -16,7 +16,7 @@ RUN trust anchor --store /tmp/autolab-all.cer \
     pacman -S --noprogressbar --noconfirm \
     emacs-nox vim nano \
     base-devel \
-    curl wget git unzip rsync openssh mosh \
+    curl wget git unzip rsync openssh mosh man-db \
     && \
     bash -c 'yes | pacman -Scc' \
     && \
