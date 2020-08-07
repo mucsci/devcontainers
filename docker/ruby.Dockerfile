@@ -6,4 +6,6 @@ RUN sudo pacman -S --noprogressbar --noconfirm \
     && \
     bash -c "yes | sudo pacman -Scc"
 
+ENV PATH="/home/user/.gem/ruby/2.7.0/bin:$PATH"
+
 ENTRYPOINT /bin/bash -l
