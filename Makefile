@@ -5,6 +5,9 @@ REPO := docker.pkg.github.com/mucsci/devcontainers
 # DockerHub
 # REPO := mucsci
 
+TAG := $(shell date "+%Y-%m-%d")
+# TAG := latest
+
 all : ai gfx java dotnet lisp cpp python base ocaml dlang swift ruby javascript
 
 arch :
@@ -12,8 +15,8 @@ arch :
 	touch $@
 
 % : docker/%.Dockerfile
-	docker build -t $(REPO)/$@ -f ./$< docker
-	docker push $(REPO)/$@
+	docker build -t $(REPO)/$@:$(TAG) -f ./$< docker
+	docker push $(REPO)/$@:$(TAG)
 	touch $@
 
 ai : python
