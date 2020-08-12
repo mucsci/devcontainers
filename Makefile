@@ -1,25 +1,62 @@
-.PHONY : all
+.PHONY : all changed
 
-# GitHub Packages
-REPO := docker.pkg.github.com/mucsci/devcontainers
-# DockerHub
-# REPO := mucsci
+SHELL := /bin/bash
 
-TAG := $(shell date "+%Y-%m-%d")
-# TAG := latest
+ALL_IMAGES =
+ALL_IMAGES += base
+ALL_IMAGES += cpp python
+ALL_IMAGES += java dotnet lisp ocaml dlang swift ruby javascript
+ALL_IMAGES += ai gfx
 
-all : ai gfx java dotnet lisp cpp python base ocaml dlang swift ruby javascript
+REPO = mucsci
 
+TAGS ?=
+TAGS += $(shell date "+%Y-%m-%d")
+TAGS += latest
+
+ACTION ?= analyze
+
+CHANGED := $(shell comm -1 <(echo $(ALL_IMAGES) | tr ' ' '\n' | sort) <(git diff --name-only HEAD HEAD~1 | grep Dockerfile | xargs -I{} basename {} .Dockerfile | tr ' ' '\n' | sort))
+
+changed : $(CHANGED)
+
+all : $(ALL_IMAGES)
+
+ifeq ($(ACTION), update)
 arch :
 	docker pull archlinux/base
-	touch $@
+else
+arch :
+	echo "Using predownloaded archlinux/base"
+endif
 
-% : docker/%.Dockerfile
-	docker build -t $(REPO)/$@:$(TAG) -f ./$< docker
-	docker push $(REPO)/$@:$(TAG)
-	touch $@
+ifeq ($(ACTION), analyze)
 
 ai : python
 gfx : cpp
 java lisp dotnet python cpp ocaml dlang swift ruby javascript : base
 base : arch
+
+% :
+	@echo Analyzing $@
+	$(eval ACTION=build$(shell echo $(CHANGED) | gsed -r 's/\b/|/g' | grep -c "|$@|"))
+	@echo $(ACTION)
+	make MAKEFLAGS=$(MAKEFLAGS) ACTION=$(ACTION) $@
+
+else ifeq ($(ACTION), build1)
+
+% :
+	@echo Building $@
+	DOCKER_BUILDKIT=1 docker build -t temporary_image -f ./docker/$@.Dockerfile ./docker/
+	$(foreach TAG, $(TAGS), docker tag temporary_image $(REPO)/$@:$(TAG) ; )
+	docker rmi temporary_image
+	$(foreach TAG, $(TAGS), docker push $(REPO)/$@:$(TAG) ; )
+
+else ifeq ($(ACTION), build0)
+
+% :
+	@echo Pulling $@
+	$(foreach REPO, $(REPOS), docker pull $(REPO)/$@:latest ; )
+	true
+
+endif
