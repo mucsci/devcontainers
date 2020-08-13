@@ -61,7 +61,7 @@ base : arch
 else ifeq ($(ACTION), build)
 
 % :
-	DOCKER_BUILDKIT=1 docker build -t temporary_image -f ./docker/$@.Dockerfile ./docker/
+	DOCKER_BUILDKIT=1 docker build -t temporary_image -f ./docker/$@/Dockerfile ./docker/$@
 	$(foreach TAG, $(TAGS), docker tag temporary_image $(REPO)/$@:$(TAG) ; )
 	docker rmi temporary_image
 	$(foreach TAG, $(TAGS), docker push $(REPO)/$@:$(TAG) ; )
