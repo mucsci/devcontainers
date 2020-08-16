@@ -1,7 +1,7 @@
 FROM mucsci/base
 MAINTAINER Will Killian <william.killian@millersville.edu>
 
-RUN sudo pacman -S --noprogressbar --noconfirm \
+RUN sudo pacman -Syu --noprogressbar --noconfirm \
     imagemagick \
     ocaml opam \
     && \

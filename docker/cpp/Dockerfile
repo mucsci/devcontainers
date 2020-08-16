@@ -1,12 +1,13 @@
 FROM mucsci/base
 MAINTAINER Will Killian <william.killian@millersville.edu>
 
-RUN sudo pacman -S --noprogressbar --noconfirm \
+RUN sudo pacman -Syu --noprogressbar --noconfirm \
     gcc clang openmp llvm cmake \
     boost catch2 gtest gmock \
     openmpi \
     ninja \
     gdb lldb valgrind cppcheck \
+    imagemagick \
     yay \
     && \
     yay -S --needed --noprogressbar --noconfirm \

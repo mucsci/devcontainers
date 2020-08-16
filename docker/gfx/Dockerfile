@@ -1,7 +1,7 @@
 FROM mucsci/cpp
 MAINTAINER Will Killian <william.killian@millersville.edu>
 
-RUN sudo pacman -S --noprogressbar --noconfirm \
+RUN sudo pacman -Syu --noprogressbar --noconfirm \
     imagemagick tk tcl fontconfig \
     freeglut glew glu mesa assimp glm emscripten sdl2 sdl2_gfx sdl2_image sdl2_ttf \
     && \
