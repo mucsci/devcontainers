@@ -18,6 +18,15 @@
     "files.exclude": {
       "**/.devcontainer": true
     },
-    "telemetry.enableTelemetry": false
+    "telemetry.enableTelemetry": false,
+    "reason.codelens.enabled": true,
+    "reason.path.ocamlmerlin": "/home/user/.opam/default/bin/ocamlmerlin",
+    "reason.path.ocamlfind": "/home/user/.opam/default/bin/ocamlfind",
+    "reason.server.languages": [
+        "ocaml"
+    ],
+    "reason.diagnostics.tools": [
+        "merlin"
+    ]
   }
 }
