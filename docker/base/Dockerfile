@@ -3,11 +3,8 @@ MAINTAINER Will Killian <william.killian@millersville.edu>
 
 ADD autolab /usr/local/bin/
 ADD add_user.sh /tmp
-ADD autolab-all.cer /tmp
 
-RUN trust anchor --store /tmp/autolab-all.cer \
-    && \
-    /tmp/add_user.sh user password \
+RUN /tmp/add_user.sh user password \
     && \
     sed -i '1s;^;Server = http://mirrors.rutgers.edu/archlinux/$repo/os/$arch\nServer = https://mirrors.rutgers.edu/archlinux/$repo/os/$arch\n;' /etc/pacman.d/mirrorlist \
     && \
