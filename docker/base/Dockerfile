@@ -1,4 +1,4 @@
-FROM archlinux/base
+FROM archlinux
 
 ADD autolab /usr/local/bin/
 ADD add_user.sh /tmp
