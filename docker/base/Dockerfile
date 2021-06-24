@@ -1,5 +1,4 @@
 FROM archlinux/base
-MAINTAINER Will Killian <william.killian@millersville.edu>
 
 ADD autolab /usr/local/bin/
 ADD add_user.sh /tmp
@@ -17,16 +16,8 @@ RUN /tmp/add_user.sh user password \
     && \
     bash -c 'yes | pacman -Scc' \
     && \
-    rm -rf /home/user/.cache \
-    && \
-    /usr/bin/ssh-keygen -A \
-    && \
-    sed -i -e 's/^UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+    rm -rf /home/user/.cache
 
 USER user
 
 WORKDIR /home/user
-
-EXPOSE 22
-
-CMD ["/usr/sbin/sshd", "-D"]
